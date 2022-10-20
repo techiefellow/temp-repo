@@ -1,0 +1,62 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 TimesNewRomanPSMT;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sl313\sa213\partightenfactor0
+
+\f0\fs29\fsmilli14667 \cf2 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\li960\fi-480\sl313\partightenfactor0
+\cf2 1.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 Create a project in your favorite IDE (Netbeans, Eclipse, etc) named SIL (Simple Interpreted Language.\
+2.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 In ANTLRWorks create a new grammar. File->New. ANTRL 3, check every checkbox in the New dialog (Int, ID, String, etc)\
+3.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 You will see an ANTLR grammar with the lexer rules (ID, Int, String, etc) already defined for you\
+4.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 Add @header \{ package Unit3;\} and @lexer::header\{\'a0 package Unit3;\}\
+5.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 Add these rules\
+\pard\pardeftab720\li1920\fi-480\sl313\partightenfactor0
+\cf2 a.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 program :\'a0 statement+;\
+b.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 statement : \
+c.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0print \
+d.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 \'a0\'a0\'a0\'a0\'a0\'a0|\'a0\'a0 println;\
+e.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 print : \'91PRINT\'92 STRING \{System.out.print($STRING.text);\} ;\
+f.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 println : \'91PRINTLN\'92 STRING \{System.out.println($STRING.text);\};\
+\pard\pardeftab720\li960\fi-480\sl313\partightenfactor0
+\cf2 6.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 Generate the grammar. Map\'a0 the output to your project source\
+7.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 Create an input file of statements for our language \'93SIL\'94. There are only two types: PRINT and PRINTLN. Tell Netbeans where to find you code.\
+8.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 Add the ANTLR library to you IDE\'92s search path. In Netbeans under the Project, right click on Libraries and select Add Jar and then select the "C:\\antlr\\antlr-3.3-complete.jar" or wherever you have installed ANTLR.\
+\pard\pardeftab720\li960\fi-480\sl313\sa213\partightenfactor0
+\cf2 9.
+\f1\fs18\fsmilli9333 \'a0\'a0\'a0\'a0 
+\f0\fs29\fsmilli14667 Turn in the grammar to BB dropbox Unit 3 Assignment 1.\
+\pard\pardeftab720\sl313\sa213\partightenfactor0
+\cf2 \'a0\
+}

@@ -1,0 +1,195 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 TimesNewRomanPSMT;\f1\fmodern\fcharset0 CourierNewPSMT;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs32 \cf2 \expnd0\expndtw0\kerning0
+CECS 524 Unit 3 Assignment 2\'a0\'a0 Adding Expression Evaluation and LET Statements\
+\'a0\
+In Assignment 2 we add expression evaluation and a \'93LET\'94 statement (assignment statement). LET is essentially an assignment statement similar to that of BASIC. Sample LET statements:\
+\'a0\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls1\ilvl0\cf2 \kerning1\expnd0\expndtw0 {\listtext	1.	}\expnd0\expndtw0\kerning0
+LET A = 1\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 {\listtext	2.	}\expnd0\expndtw0\kerning0
+LET B = A * 8\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 {\listtext	3.	}\expnd0\expndtw0\kerning0
+LET C = A*B + B/2 - (A+3)\
+\pard\pardeftab720\partightenfactor0
+\cf2 \'a0\
+Use the same project from Assignment 1 and just add to the ANTLR grammar the rules or edit the rules as needed. Your SIL interpreter should be able to run this program after the changes:\
+\'a0\
+LET A = 4\
+LET B = 5\
+LET C = A * B + 7\
+PRINT A \
+PRINT " * "\
+PRINT B\
+PRINT " + 7 = "\
+PRINTLN C\
+\'a0\
+which makes this output :\
+\'a0\
+4*5+7=27\
+\'a0\
+\'a0\
+Expression evaluation is at the heart of parsing computer programming languages. There are many methods. We will use the tried-and-true recursive descent technique as used in the grammar expr.g below. You are welcome to cut and paste as much of that grammar as you need to complete the assignment. That grammar uses a Java HashMap (or associative array) to act as a symbol table. It has two functions: store the names and values of the variables encounter in parsing the input to the grammar. Those variables are represented by ID in the lexer. \
+\'a0\
+The LET statement is basically the ID \'91=\'92 expr rule from the grammar. We will expand on this grammar in later assignments.\
+\'a0\
+\'a0\
+\'a0\
+\pard\pardeftab720\partightenfactor0
+
+\f1\fs26\fsmilli13333 \cf2 grammar Expr;
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 @header \{
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 package expressionparser;
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 import java.util.HashMap;
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \}
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 @lexer::header \{
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 package expressionparser;
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \}
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 @members \{
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 /** Map variable name to Integer object holding value */
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 HashMap memory = new HashMap();
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \}
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 prog:\'a0\'a0 stat+ ;
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0\'a0 
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 stat:\'a0\'a0 expr NEWLINE \{System.out.println($expr.value);\}
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0 |\'a0\'a0 ID '=' expr NEWLINE
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{memory.put($ID.text, new Integer($expr.value));\}
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0 |\'a0\'a0 NEWLINE \{System.out.println("A newline has been issued");\}
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0 ;
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 expr returns [int value]
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0 :\'a0\'a0 e=multExpr \{$value = $e.value;\}
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 (\'a0\'a0 '+' e=multExpr \{$value += $e.value;\'a0\'a0 \}
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 |\'a0\'a0 '-' e=multExpr \{$value -= $e.value;\}
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 )*
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0 ;
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 multExpr returns [int value]
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0 :\'a0\'a0 e=atom \{$value = $e.value;\} ('*' e=atom \{$value *= $e.value;\})*
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0 ; 
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 atom returns [int value]
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0 :\'a0\'a0 INT \{$value = Integer.parseInt($INT.text);\}
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0 |\'a0\'a0 ID
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \{
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 Integer v = (Integer)memory.get($ID.text);
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 if ( v!=null ) $value = v.intValue();
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 else System.err.println("undefined variable "+$ID.text);
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0\'a0\'a0\'a0\'a0 \}
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0 |\'a0\'a0 '(' expr ')' \{$value = $expr.value;\}
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0\'a0\'a0 ;
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 \'a0
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 ID\'a0 :\'a0\'a0 ('a'..'z'|'A'..'Z')+ ;
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 INT :\'a0\'a0 '0'..'9'+ ;
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 NEWLINE:'\\r'? '\\n' ;
+\f0\fs32 \
+
+\f1\fs26\fsmilli13333 WS\'a0 :\'a0\'a0 (' '|'\\t')+ \{skip();\} ;
+\f0\fs32 \
+}
